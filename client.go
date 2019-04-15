@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	BASEURL = "https://api.quoine.com"
+	BASEURL = "https://api.liquid.com"
 	VERSION = "2"
 )
 
