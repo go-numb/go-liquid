@@ -23,7 +23,7 @@ import (
 
 
 func main() {
-	client := liquid.New("<tokenID number>", "<secretkey>")
+	client := liquid.New("<tokenID number>", "<secretkey>", nil)
 
 	fiat, err := client.GetFiatAccounts()
 	if err != nil {
