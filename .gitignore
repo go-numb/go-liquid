@@ -1,0 +1,4 @@
+*.toml
+*.csv
+*.DS_Store
+*.json
