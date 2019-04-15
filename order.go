@@ -81,7 +81,7 @@ func (c *Client) GetOrders(productID, withDetails int, fundingCurrency, status s
 	return orders, nil
 }
 
-type ReqestOrder struct {
+type RequestOrder struct {
 	Order struct {
 		OrderType  string `json:"order_type"`
 		ProductID  int    `json:"product_id"`
@@ -97,7 +97,7 @@ type ReqestOrder struct {
 }
 
 // orderType, side, quantity, price, priceRange string, productID int
-func (c *Client) CreateOrder(o ReqestOrder) (Order, error) {
+func (c *Client) CreateOrder(o RequestOrder) (Order, error) {
 	var order Order
 
 	body, err := json.Marshal(o)
