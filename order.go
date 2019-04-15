@@ -1,6 +1,8 @@
 package liquid
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -43,7 +45,7 @@ type OrderExecutions []struct {
 	CreatedAt int64   `json:"created_at"`
 }
 
-func (c *Client) GetAnOrder(orderID int) (Order, error) {
+func (c *Client) GetOrder(orderID int) (Order, error) {
 	spath := fmt.Sprintf("/orders/%d", orderID)
 
 	var order Order
@@ -94,22 +96,16 @@ type ReqestOrder struct {
 	} `json:"order"`
 }
 
-func (c *Client) CreateOrder(orderType, side, quantity, price, priceRange string, productID int) (Order, error) {
-	bodyTemplate :=
-		`{
-			"order": {
-				"order_type":"%s",
-				"product_id":%d,
-				"side":"%s",
-				"quantity":"%s",
-				"price":"%s",
-				"price_range":"%s"
-			}
-		}`
-	body := fmt.Sprintf(bodyTemplate, orderType, productID, side, quantity, price, priceRange)
-
+// orderType, side, quantity, price, priceRange string, productID int
+func (c *Client) CreateOrder(o ReqestOrder) (Order, error) {
 	var order Order
-	res, err := c.sendRequest("POST", "/orders/", strings.NewReader(body), nil)
+
+	body, err := json.Marshal(o)
+	if err != nil {
+		return order, err
+	}
+
+	res, err := c.sendRequest("POST", "/orders/", bytes.NewReader(body), nil)
 	if err != nil {
 		return order, err
 	}
@@ -121,7 +117,7 @@ func (c *Client) CreateOrder(orderType, side, quantity, price, priceRange string
 	return order, nil
 }
 
-func (c *Client) CancelAnOrder(orderID int) (Order, error) {
+func (c *Client) CancelOrder(orderID int) (Order, error) {
 	spath := fmt.Sprintf("/orders/%d/cancel", orderID)
 
 	var order Order
@@ -137,7 +133,7 @@ func (c *Client) CancelAnOrder(orderID int) (Order, error) {
 	return order, nil
 }
 
-func (c *Client) EditALiveOrder(orderID int, quantity, price string) (Order, error) {
+func (c *Client) EditLiveOrder(orderID int, quantity, price string) (Order, error) {
 	spath := fmt.Sprintf("/orders/%d", orderID)
 	bodyTemplate :=
 		`{
