@@ -7,9 +7,11 @@ import (
 )
 
 type Depth struct {
-	BuyPriceLevels  [][]json.Number `json:"buy_price_levels"`
-	SellPriceLevels [][]json.Number `json:"sell_price_levels"`
+	BuyPriceLevels  Books `json:"buy_price_levels"`
+	SellPriceLevels Books `json:"sell_price_levels"`
 }
+
+type Books [][]json.Number
 
 func (c *Client) GetOrderBook(productID int, full bool) (Depth, error) {
 	spath := fmt.Sprintf("/products/%d/price_levels", productID)
