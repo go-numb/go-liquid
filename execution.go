@@ -12,12 +12,12 @@ type Executions struct {
 }
 
 type ExecutionsModels struct {
-	ID        int    `json:"id"`
-	Quantity  string `json:"quantity"`
-	Price     string `json:"price"`
-	TakerSide string `json:"taker_side"`
-	MySide    string `json:"my_side"`
-	CreatedAt int    `json:"created_at"`
+	ID        int     `json:"id"`
+	Quantity  float64 `json:"quantity,string"`
+	Price     float64 `json:"price,string"`
+	TakerSide string  `json:"taker_side"`
+	MySide    string  `json:"my_side"`
+	CreatedAt int64   `json:"created_at"`
 }
 
 func (c *Client) GetExecutionsByTimestamp(
