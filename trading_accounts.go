@@ -1,30 +1,31 @@
 package liquid
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
 
 type TradingAccount struct {
-	ID               int     `json:"id"`
-	LeverageLevel    int     `json:"leverage_level"`
-	MaxLeverageLevel int     `json:"max_leverage_level"`
-	Pnl              float64 `json:"pnl,string"`
-	Equity           float64 `json:"equity,string"`
-	Margin           float64 `json:"margin,string"`
-	FreeMargin       float64 `json:"free_margin,string"`
-	TraderID         int     `json:"trader_id"`
-	Status           string  `json:"status"`
-	ProductCode      string  `json:"product_code"`
-	CurrencyPairCode string  `json:"currency_pair_code"`
-	Position         float64 `json:"position,string"`
-	Balance          float64 `json:"balance,string"`
-	CreatedAt        int64   `json:"created_at"`
-	UpdatedAt        int64   `json:"updated_at"`
-	PusherChannel    string  `json:"pusher_channel"`
-	MarginPercent    float64 `json:"margin_percent,string"`
-	ProductID        int     `json:"product_id"`
-	FundingCurrency  string  `json:"funding_currency"`
+	ID               int         `json:"id"`
+	LeverageLevel    int         `json:"leverage_level"`
+	MaxLeverageLevel int         `json:"max_leverage_level"`
+	Pnl              json.Number `json:"pnl"`
+	Equity           json.Number `json:"equity"`
+	Margin           json.Number `json:"margin"`
+	FreeMargin       json.Number `json:"free_margin"`
+	TraderID         int         `json:"trader_id"`
+	Status           string      `json:"status"`
+	ProductCode      string      `json:"product_code"`
+	CurrencyPairCode string      `json:"currency_pair_code"`
+	Position         json.Number `json:"position"`
+	Balance          json.Number `json:"balance"`
+	CreatedAt        int64       `json:"created_at"`
+	UpdatedAt        int64       `json:"updated_at"`
+	PusherChannel    string      `json:"pusher_channel"`
+	MarginPercent    json.Number `json:"margin_percent"`
+	ProductID        int         `json:"product_id"`
+	FundingCurrency  string      `json:"funding_currency"`
 }
 
 func (c *Client) GetTradingAccounts() ([]TradingAccount, error) {

@@ -82,22 +82,24 @@ func (c *Client) GetOrders(productID, withDetails int, fundingCurrency, status s
 }
 
 type RequestOrder struct {
-	Order struct {
-		OrderType  string `json:"order_type"`
-		ProductID  int    `json:"product_id"`
-		Side       string `json:"side"`
-		Quantity   string `json:"quantity"`
-		Price      string `json:"price"`
-		PriceRange string `json:"price_range,omitempty"`
-		// Margin trade
-		LeverageLevel   int    `json:"leverage_level,omitempty"`
-		FundingCurrency string `json:"funding_currency,omitempty"`
-		OrderDirection  string `json:"order_direction,omitempty"`
-	} `json:"order"`
+	Order Params `json:"order"`
+}
+
+type Params struct {
+	OrderType  string `json:"order_type"`
+	ProductID  int    `json:"product_id"`
+	Side       string `json:"side"`
+	Quantity   string `json:"quantity"`
+	Price      string `json:"price,omitempty"`
+	PriceRange string `json:"price_range,omitempty"`
+	// Margin trade
+	LeverageLevel   int    `json:"leverage_level,omitempty"`
+	FundingCurrency string `json:"funding_currency,omitempty"`
+	OrderDirection  string `json:"order_direction,omitempty"`
 }
 
 // orderType, side, quantity, price, priceRange string, productID int
-func (c *Client) CreateOrder(o RequestOrder) (Order, error) {
+func (c *Client) CreateOrder(o *RequestOrder) (Order, error) {
 	var order Order
 
 	body, err := json.Marshal(o)

@@ -8,8 +8,8 @@ import (
 )
 
 type Config struct {
-	ID        string
-	SecretKey string
+	ID    string
+	Token string
 }
 
 const (
@@ -20,7 +20,11 @@ func TestGetFiat(t *testing.T) {
 	var c Config
 	toml.DecodeFile(KEYPATH, &c)
 
-	client, err := New(c.ID, c.SecretKey, nil)
+	client, err := New(c.ID, c.Token, nil)
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Printf("%+v\n", client)
 
 	fiat, err := client.GetFiatAccounts()
 	if err != nil {
