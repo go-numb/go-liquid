@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 )
@@ -17,12 +18,12 @@ type Orders struct {
 type Order struct {
 	ID                   int             `json:"id"`
 	OrderType            string          `json:"order_type"`
-	Quantity             float64         `json:"quantity,string"`
-	DiscQuantity         float64         `json:"disc_quantity,string"`
+	Quantity             json.Number     `json:"quantity"`
+	DiscQuantity         json.Number     `json:"disc_quantity"`
 	IcebergTotalQuantity string          `json:"iceberg_total_quantity"`
 	Side                 string          `json:"side"`
 	FilledQuantity       string          `json:"filled_quantity"`
-	Price                float64         `json:"price,string"`
+	Price                json.Number     `json:"price"`
 	CreatedAt            int64           `json:"created_at"`
 	UpdatedAt            int64           `json:"updated_at"`
 	Status               string          `json:"status"`
@@ -32,7 +33,7 @@ type Order struct {
 	ProductCode          string          `json:"product_code"`
 	FundingCurrency      string          `json:"funding_currency"`
 	CurrencyPairCode     string          `json:"currency_pair_code"`
-	OrderFee             float64         `json:"order_fee,string"`
+	OrderFee             json.Number     `json:"order_fee"`
 	Executions           OrderExecutions `json:"executions"`
 }
 
@@ -82,10 +83,10 @@ func (c *Client) GetOrders(productID, withDetails int, fundingCurrency, status s
 }
 
 type RequestOrder struct {
-	Order Params `json:"order"`
+	Order OrderParams `json:"order"`
 }
 
-type Params struct {
+type OrderParams struct {
 	OrderType  string `json:"order_type"`
 	ProductID  int    `json:"product_id"`
 	Side       string `json:"side"`
@@ -157,4 +158,11 @@ func (c *Client) EditLiveOrder(orderID int, quantity, price string) (Order, erro
 	}
 
 	return order, nil
+}
+
+// ToPriceString is float to string price.00001
+func ToPriceString(price float64) string {
+	price = math.RoundToEven(price*100000) / 100000
+
+	return fmt.Sprintf("%f", price)
 }

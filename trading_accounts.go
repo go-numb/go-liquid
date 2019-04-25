@@ -3,6 +3,7 @@ package liquid
 import (
 	"encoding/json"
 	"fmt"
+
 	"strings"
 )
 
@@ -63,7 +64,7 @@ func (c *Client) UpdateLeverageLevel(tradeAccountID, leverageLevel int) (Trading
 	bodyTemplate :=
 		`{
 			"trading_account": {
-				"leverage_level":%d
+				"leverage_level": %d
 			}
 		}`
 	body := fmt.Sprintf(bodyTemplate, leverageLevel)
@@ -73,6 +74,7 @@ func (c *Client) UpdateLeverageLevel(tradeAccountID, leverageLevel int) (Trading
 	if err != nil {
 		return tradingAccount, err
 	}
+	defer res.Body.Close()
 
 	if err := decode(res, &tradingAccount); err != nil {
 		return tradingAccount, err

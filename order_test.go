@@ -2,6 +2,7 @@ package liquid
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/BurntSushi/toml"
@@ -18,26 +19,39 @@ func TestOrder(t *testing.T) {
 		t.Error(err)
 	}
 
+	var tradingAccountID int
 	accounts, err := c.GetTradingAccounts()
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Printf("accouts: %+v\n", accounts)
+	fmt.Println("Trading accounts")
+	for i, v := range accounts {
+		if strings.HasPrefix(v.CurrencyPairCode, "BTC") {
+			fmt.Printf("accout %d: %+v\n", i, v)
+			tradingAccountID = v.ID
+		}
+	}
 
-	// o, err := c.CreateOrder(&RequestOrder{
-	// 	Params{
-	// 		OrderType:       "market",
-	// 		ProductID:       5,
-	// 		Side:            "sell",
-	// 		Quantity:        "0.1",
-	// 		LeverageLevel:   25,
-	// 		FundingCurrency: "JPY",
-	// 		OrderDirection:  "two_direction",
-	// 	},
-	// })
-	// if err != nil {
-	// 	t.Error(err)
-	// }
+	res, err := c.UpdateLeverageLevel(tradingAccountID, 25)
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Printf("leverage level: %+v\n", res)
 
-	// fmt.Printf("%+v\n", o)
+	o, err := c.CreateOrder(&RequestOrder{
+		OrderParams{
+			OrderType:       "market",
+			ProductID:       5,
+			Side:            "sell",
+			Quantity:        "0.001",
+			LeverageLevel:   25,
+			FundingCurrency: "JPY",
+			OrderDirection:  "one_direction",
+		},
+	})
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Printf("%+v\n", o)
 }

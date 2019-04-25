@@ -13,7 +13,7 @@ type Config struct {
 }
 
 const (
-	KEYPATH = ""
+	KEYPATH = "/Users/k-terashima/.keys/liquid.toml"
 )
 
 func TestGetFiat(t *testing.T) {
