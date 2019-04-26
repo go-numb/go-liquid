@@ -164,5 +164,12 @@ func (c *Client) EditLiveOrder(orderID int, quantity, price string) (Order, erro
 func ToPriceString(price float64) string {
 	price = math.RoundToEven(price*100000) / 100000
 
-	return fmt.Sprintf("%f", price)
+	return fmt.Sprintf("%.5f", price)
+}
+
+// ToQtyString is float to string size.001
+func ToQtyString(size float64) string {
+	size = math.RoundToEven(size*1000) / 1000
+
+	return fmt.Sprintf("%.3f", size)
 }
