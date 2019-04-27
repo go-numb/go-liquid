@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"strconv"
 	"strings"
 )
 
@@ -62,15 +61,29 @@ func (c *Client) GetOrder(orderID int) (Order, error) {
 	return order, nil
 }
 
-func (c *Client) GetOrders(productID, withDetails int, fundingCurrency, status string) (Orders, error) {
-	params := &map[string]string{
-		"product_id":       strconv.Itoa(productID),
-		"with_details":     strconv.Itoa(withDetails),
-		"status":           status,
-		"funding_currency": fundingCurrency}
+type OrdersFilter struct {
+	ProductID       string `json:"product_id,omitempty"`
+	WithDetails     string `json:"with_details,omitempty"`
+	Status          string `json:"status,omitempty"`
+	FundingCurrency string `json:"funding_currency,omitempty"`
 
+	// 下記Doc非公開フィルター
+	// WebAPI: page=1&limit=24&currency_pair_code=BTCJPY&status=live&trading_type=cfd
+	Page             string `json:"page,omitempty"`
+	Limit            string `json:"limit,omitempty"`
+	CurrencyPairCode string `json:"currency_pair_code,omitempty"`
+	TradingType      string `json:"trading_type,omitempty"`
+}
+
+func (c *Client) GetOrders(filters OrdersFilter) (Orders, error) {
 	var orders Orders
-	res, err := c.sendRequest("GET", "/orders", nil, params)
+
+	j, err := json.Marshal(filters)
+	if err != nil {
+		return orders, err
+	}
+
+	res, err := c.sendRequest("GET", "/orders", bytes.NewReader(j), nil)
 	if err != nil {
 		return orders, err
 	}
