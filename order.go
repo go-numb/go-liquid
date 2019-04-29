@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"strings"
 )
 
 type Orders struct {
@@ -149,19 +148,33 @@ func (c *Client) CancelOrder(orderID int) (Order, error) {
 	return order, nil
 }
 
-func (c *Client) EditLiveOrder(orderID int, quantity, price string) (Order, error) {
-	spath := fmt.Sprintf("/orders/%d", orderID)
-	bodyTemplate :=
-		`{
-			"order": {
-				"quantity":"%s",
-				"price":"%s",
-			}
-		}`
-	body := fmt.Sprintf(bodyTemplate, quantity, price)
+type EditOrderParams struct {
+	Quantity string `json:"quantity"`
+	Price    string `json:"price"`
+}
+
+// func (c *Client) EditLiveOrder(orderID int, quantity, price string) (Order, error) {
+func (c *Client) EditLiveOrder(id int, e *EditOrderParams) (Order, error) {
+	spath := fmt.Sprintf("/orders/%d", id)
+	// bodyTemplate :=
+	// 	`{
+	// 		"order": { // Orderセクションは実はいらない
+	// 			"quantity":	"%s",
+	// 			"price":	"%s"
+	// 		}
+	// 	}`
+	// body := fmt.Sprintf(bodyTemplate, quantity, price)
 
 	var order Order
-	res, err := c.sendRequest("PUT", spath, strings.NewReader(body), nil)
+
+	body, err := json.Marshal(e)
+	if err != nil {
+		return order, err
+	}
+
+	fmt.Printf("%+v\n", string(body))
+
+	res, err := c.sendRequest("PUT", spath, bytes.NewReader(body), nil)
 	if err != nil {
 		return order, err
 	}
