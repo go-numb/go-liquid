@@ -105,7 +105,7 @@ type PusherBooks struct {
 
 func (p *Realtime) handle(method, key string, channel *pusher.Channel) {
 	switch { // Bind内部はgoroutine処理、故にhandle稼働時に処理を分けきる
-	case strings.Contains(key, "user_executions_cash"): // 板
+	case strings.Contains(key, "user_executions_cash"): // 自己約定
 		channel.Bind(method, func(data interface{}) { // Use CREATE
 			b, ok := data.(string)
 			if !ok {
@@ -117,7 +117,7 @@ func (p *Realtime) handle(method, key string, channel *pusher.Channel) {
 			p.Results <- s
 		})
 
-	case strings.Contains(key, "executions_cash"): // 板
+	case strings.Contains(key, "executions_cash"): // 約定
 		channel.Bind(method, func(data interface{}) { // Use CREATE
 			b, ok := data.(string)
 			if !ok {

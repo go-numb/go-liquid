@@ -13,7 +13,7 @@ $ go get -u github.com/go-numb/go-liquid
 ```
 
 ## Usage
-``` 
+``` golang
 package main
 
 import (
@@ -33,6 +33,37 @@ func main() {
 	fmt.Printf("%v\n", fiat)
 
 	doSomething()
+}
+```
+
+## Usage for websocket(pusher)
+``` golang
+package main
+
+import (
+	"fmt"
+	"github.com/go-numb/go-liquid"
+)
+
+
+func Method(t *testing.T) {
+	done := make(chan struct{})
+
+	// for recive response data
+	realtime := NewConnect()
+	// Connect is reading channels in for loop
+	go realtime.Connect([]string{PUSHERchEXECUTION, PUSHERchASK, PUSHERchBID}, []string{BTCJPY, ETHJPY})
+
+	// use result data
+	// data in struct
+	for {
+		select {
+		case result := <-realtime.Results:
+			fmt.Printf("result: %+v\n", result)
+		}
+	}
+
+	<-done
 }
 ```
 
