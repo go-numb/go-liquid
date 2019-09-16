@@ -172,8 +172,6 @@ func (c *Client) EditLiveOrder(id int, e *EditOrderParams) (Order, error) {
 		return order, err
 	}
 
-	fmt.Printf("%+v\n", string(body))
-
 	res, err := c.sendRequest("PUT", spath, bytes.NewReader(body), nil)
 	if err != nil {
 		return order, err
@@ -184,6 +182,12 @@ func (c *Client) EditLiveOrder(id int, e *EditOrderParams) (Order, error) {
 	}
 
 	return order, nil
+}
+
+// https://api.liquid.com/trades/close_all?funding_currency=JPY&product_id=5
+// OrderAllClose
+func (p *Client) OrderAllClose() {
+
 }
 
 // ToPriceString is float to string price.00001
