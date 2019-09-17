@@ -1,6 +1,9 @@
 package liquid
 
-import "sync"
+import (
+	"errors"
+	"sync"
+)
 
 // Limit is managed API Limit
 type Limit struct {
@@ -20,13 +23,13 @@ func NewLimit(isPrivate bool) *Limit {
 }
 
 // Check is api limit
-func (p *Limit) Check() bool {
+func (p *Limit) Check() error {
 	if p.int <= 0 {
-		return false
+		return errors.New("api limit, too much")
 	}
 
 	p.int--
-	return true
+	return nil
 }
 
 // ResetAPI is resets api limit at every 5minutes
