@@ -7,6 +7,18 @@ type Limit struct {
 	int
 }
 
+func NewLimit(isPrivate bool) *Limit {
+	if isPrivate {
+		return &Limit{
+			int: APILIMIT,
+		}
+	}
+	// 201904: Private/Public same limit number
+	return &Limit{
+		int: APILIMIT,
+	}
+}
+
 // Check is api limit
 func (p *Limit) Check() bool {
 	if p.int <= 0 {
