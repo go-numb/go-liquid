@@ -40,3 +40,8 @@ func (p *Limit) ResetAPI() {
 
 	p.int = APILIMIT
 }
+
+// Remain is remain number of API limit
+func (p *Limit) Remain() int {
+	return p.int
+}
