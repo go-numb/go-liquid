@@ -17,6 +17,29 @@ import (
 const (
 	BASEURL = "https://api.liquid.com"
 	VERSION = "2"
+
+	FUNDJPY = "JPY"
+	FUNDUSD = "USD"
+
+	LIMIT  = "limit"
+	MARKET = "market"
+	BUY    = "buy"
+	SELL   = "sell"
+
+	NETOUT       = "netout"
+	ONEDIRECTION = "one_direction"
+	TWODIRECTION = "two_direction"
+
+	APILIMIT = 300 // par 5minutes
+)
+
+const (
+	_ int = iota
+	_
+	_
+	_
+	_
+	PRODUCT5_BTCJPY
 )
 
 type Client struct {

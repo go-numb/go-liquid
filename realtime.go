@@ -65,7 +65,6 @@ func (p *Realtime) Connect(channels, products []string) {
 		default:
 			go p.handle(PUSHERUPDATE, key, channel)
 		}
-
 	}
 
 	<-done
