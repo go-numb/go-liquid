@@ -112,6 +112,9 @@ type OrderParams struct {
 	// CFD Optionals
 	TradingType string `json:"trading_type,omitempty"` // margin or cfd, only available if leverage_level > 1
 	MarginType  string `json:"margin_type,omitempty"`  // cross or isolated, only available if leverage_level > 1, default is cross
+
+	// ClientID
+	ClientOrderID string `json:"client_order_id,omitempty"`
 }
 
 // orderType, side, quantity, price, priceRange string, productID int
