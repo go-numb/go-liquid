@@ -99,16 +99,19 @@ type RequestOrder struct {
 }
 
 type OrderParams struct {
-	OrderType  string `json:"order_type"`
+	OrderType  string `json:"order_type"` // limit, market or market_with_range
 	ProductID  int    `json:"product_id"`
 	Side       string `json:"side"`
 	Quantity   string `json:"quantity"`
 	Price      string `json:"price,omitempty"`
-	PriceRange string `json:"price_range,omitempty"`
+	PriceRange string `json:"price_range,omitempty"` // order type optional
 	// Margin trade
 	LeverageLevel   int    `json:"leverage_level,omitempty"`
 	FundingCurrency string `json:"funding_currency,omitempty"`
 	OrderDirection  string `json:"order_direction,omitempty"`
+	// CFD Optionals
+	TradingType string `json:"trading_type,omitempty"` // margin or cfd, only available if leverage_level > 1
+	MarginType  string `json:"margin_type,omitempty"`  // cross or isolated, only available if leverage_level > 1, default is cross
 }
 
 // orderType, side, quantity, price, priceRange string, productID int
