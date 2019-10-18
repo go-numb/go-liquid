@@ -89,8 +89,8 @@ type PusherExecutionMe struct {
 type PusherExecution struct {
 	CreatedAt int64   `json:"created_at"`
 	ID        int     `json:"id"`
-	Price     float64 `json:"price"`
-	Quantity  float64 `json:"quantity"`
+	Price     float64 `json:"price,string"`
+	Quantity  float64 `json:"quantity,string"`
 	TakerSide string  `json:"taker_side"`
 
 	Delay time.Duration

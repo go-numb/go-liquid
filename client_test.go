@@ -13,7 +13,7 @@ type Config struct {
 }
 
 const (
-	KEYPATH = "/Users/<your_name>/.keys/liquid.toml"
+	KEYPATH = "/Users/<user_name>/.keys/liquid.toml"
 )
 
 func TestGetFiat(t *testing.T) {
@@ -32,4 +32,22 @@ func TestGetFiat(t *testing.T) {
 	}
 
 	fmt.Printf("%+v\n", fiat)
+}
+
+func TestGetExecutions(t *testing.T) {
+	var c Config
+	toml.DecodeFile(KEYPATH, &c)
+
+	client, err := New(c.ID, c.Token, nil)
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Printf("%+v\n", client)
+
+	ex, err := client.GetExecutions(5, 10, 1)
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Printf("%+v\n", ex)
 }
